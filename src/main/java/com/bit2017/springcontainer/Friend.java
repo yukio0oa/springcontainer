@@ -1,7 +1,5 @@
 package com.bit2017.springcontainer;
 
-import org.springframework.stereotype.Component;
-
 public class Friend {
 	private String name;
 
