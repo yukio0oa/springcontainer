@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean class="com.bit2017.springcontainer.User"/>
+	<bean id="user1" name="usr1" class="com.bit2017.springcontainer.User"/>
+
+	<!-- 기본 생성자가 없는 경우 에러 -->
+	<!-- bean class="com.bit2017.springcontainer.Member"/-->
+	
+	<!-- 생성자로 생성 -->
+	<bean id="member1" class="com.bit2017.springcontainer.Member">
+		<constructor-arg value="안대혁"/>
+	</bean>
+	
+	<!-- 파라미터가 2개 이상인 생성자로 생성 -->
+	<bean id="user2" class="com.bit2017.springcontainer.User">
+		<constructor-arg value="2"/>
+		<constructor-arg value="둘리"/>
+	</bean>
+	
+	<!-- 파라미터가 2개 이상인 생성자로 생성 에러: 순서가 바뀌면 안됨 -->
+	<!--
+	<bean id="user3" class="com.bit2017.springcontainer.User">
+		<constructor-arg value="둘리"/>
+		<constructor-arg value="1"/>
+	</bean>
+	-->
+	<bean id="user3" class="com.bit2017.springcontainer.User">
+		<constructor-arg index="1" value="둘리"/>
+		<constructor-arg index="0" value="3"/>
+		<property name="friend">
+			<bean class="com.bit2017.springcontainer.Friend">
+				<property name="name" value="희동이" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- setter 사용하기 -->
+	<bean id="user4" class="com.bit2017.springcontainer.User">
+		<property name="no" value="4" />
+		<property name="name" value="마이콜" />
+		<property name="friend" ref="friend1" />
+		<property name="friends">
+			<list>
+				<value>길동이</value>
+				<value>철수</value>
+				<value>영희</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="friend1" class="com.bit2017.springcontainer.Friend">
+		<property name="name" value="또치" />
+	</bean>
+	
+	<bean id="student" class="com.bit2017.springcontainer.Student">
+		<property name="name" value="범생이" />
+	</bean>
+	
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.bit2017.springcontainer">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />		
+	</context:component-scan>				
+</beans>
